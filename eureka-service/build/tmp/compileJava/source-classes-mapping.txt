@@ -1,0 +1,2 @@
+com/example/serviceregistrationanddiscoveryservice/ServiceRegistrationAndDiscoveryServiceApplication.java
+ com.example.serviceregistrationanddiscoveryservice.ServiceRegistrationAndDiscoveryServiceApplication

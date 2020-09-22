@@ -1,0 +1,69 @@
+---
+spring:
+  application:
+    name: eureka-server-0
+  profiles: eureka-server-0
+server:
+  port: 8761
+eureka:
+  instance:
+    hostname: eureka-server-0.eureka-server
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server-1.eureka-server:8761/eureka/,http://eureka-server-2.eureka-server:8761/eureka/,http://eureka-server-3.eureka-server:8761/eureka/,http://eureka-server-4.eureka-server:8761/eureka/
+
+---
+spring:
+  application:
+    name: eureka-server-1
+  profiles: eureka-server-1
+server:
+  port: 8761
+eureka:
+  instance:
+    hostname: eureka-server-1.eureka-server
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server-0.eureka-server:8761/eureka/,http://eureka-server-2.eureka-server:8761/eureka/,http://eureka-server-3.eureka-server:8761/eureka/,http://eureka-server-4.eureka-server:8761/eureka/
+
+---
+spring:
+  application:
+    name: eureka-server-2
+  profiles: eureka-server-2
+server:
+  port: 8761
+eureka:
+  instance:
+    hostname: eureka-server-2.eureka-server
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server-0.eureka-server:8761/eureka/,http://eureka-server-1.eureka-server:8761/eureka/,http://eureka-server-3.eureka-server:8761/eureka/,http://eureka-server-4.eureka-server:8761/eureka/
+
+---
+spring:
+  application:
+    name: eureka-server-3
+  profiles: eureka-server-3
+server:
+  port: 8761
+eureka:
+  instance:
+    hostname: eureka-server-3.eureka-server
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server-0.eureka-server:8761/eureka/,http://eureka-server-1.eureka-server:8761/eureka/,http://eureka-server-2.eureka-server:8761/eureka/,http://eureka-server-4.eureka-server:8761/eureka/
+
+---
+spring:
+  application:
+    name: eureka-server-4
+  profiles: eureka-server-4
+server:
+  port: 8761
+eureka:
+  instance:
+    hostname: eureka-server-4.eureka-server
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server-0.eureka-server:8761/eureka/,http://eureka-server-1.eureka-server:8761/eureka/,http://eureka-server-2.eureka-server:8761/eureka/,http://eureka-server-3.eureka-server:8761/eureka/

@@ -1,0 +1,9 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: eureka-disable-mtls
+spec:
+  host: eureka-server.eureka.svc.cluster.local
+  trafficPolicy:
+    tls:
+      mode: DISABLE
