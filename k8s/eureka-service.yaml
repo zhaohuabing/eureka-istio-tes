@@ -21,13 +21,13 @@ spec:
     matchLabels:
       app: eureka-server
   serviceName: "eureka-server"
-  replicas: 5
+  replicas: 3
   template:
     metadata:
       labels:
         app: eureka-server
       annotations:
-        sidecar.istio.io/inject: "false"
+        sidecar.istio.io/inject: "true"
     spec:
       containers:
       - name: eureka-server

@@ -1,0 +1,409 @@
+    {
+     "version_info": "2020-09-27T13:45:37Z/7",
+     "cluster": {
+      "@type": "type.googleapis.com/envoy.api.v2.Cluster",
+      "name": "outbound|8761||eureka-server.eureka.svc.cluster.local",
+      "type": "ORIGINAL_DST",
+      "connect_timeout": "10s",
+      "lb_policy": "CLUSTER_PROVIDED",
+      "circuit_breakers": {
+       "thresholds": [
+        {
+         "max_connections": 4294967295,
+         "max_pending_requests": 4294967295,
+         "max_requests": 4294967295,
+         "max_retries": 4294967295
+        }
+       ]
+      },
+      "transport_socket": {
+       "name": "envoy.transport_sockets.tls",
+       "typed_config": {
+        "@type": "type.googleapis.com/envoy.api.v2.auth.UpstreamTlsContext",
+        "common_tls_context": {
+         "alpn_protocols": [
+          "istio-peer-exchange",
+          "istio"
+         ],
+         "tls_certificate_sds_secret_configs": [
+          {
+           "name": "default",
+           "sds_config": {
+            "api_config_source": {
+             "api_type": "GRPC",
+             "grpc_services": [
+              {
+               "envoy_grpc": {
+                "cluster_name": "sds-grpc"
+               }
+              }
+             ]
+            }
+           }
+          }
+         ],
+         "combined_validation_context": {
+          "default_validation_context": {
+           "match_subject_alt_names": [
+            {
+             "exact": "spiffe://cluster.local/ns/eureka/sa/default"
+            }
+           ]
+          },
+          "validation_context_sds_secret_config": {
+           "name": "ROOTCA",
+           "sds_config": {
+            "api_config_source": {
+             "api_type": "GRPC",
+             "grpc_services": [
+              {
+               "envoy_grpc": {
+                "cluster_name": "sds-grpc"
+               }
+              }
+             ]
+            }
+           }
+          }
+         }
+        },
+        "sni": "outbound_.8761_._.eureka-server.eureka.svc.cluster.local"
+       }
+      },
+      "filters": [
+       {
+        "name": "envoy.filters.network.upstream.metadata_exchange",
+        "typed_config": {
+         "@type": "type.googleapis.com/udpa.type.v1.TypedStruct",
+         "type_url": "type.googleapis.com/envoy.tcp.metadataexchange.config.MetadataExchange",
+         "value": {
+          "protocol": "istio-peer-exchange"
+         }
+        }
+       }
+      ]
+     },
+     "last_updated": "2020-09-27T13:45:51.862Z"
+    },
+    {
+     "name": "0.0.0.0_8761",
+     "active_state": {
+      "version_info": "2020-09-27T13:46:34Z/2",
+      "listener": {
+       "@type": "type.googleapis.com/envoy.api.v2.Listener",
+       "name": "0.0.0.0_8761",
+       "address": {
+        "socket_address": {
+         "address": "0.0.0.0",
+         "port_value": 8761
+        }
+       },
+       "filter_chains": [
+        {
+         "filter_chain_match": {
+          "application_protocols": [
+           "http/1.0",
+           "http/1.1",
+           "h2c"
+          ]
+         },
+         "filters": [
+          {
+           "name": "envoy.http_connection_manager",
+           "typed_config": {
+            "@type": "type.googleapis.com/envoy.config.filter.network.http_connection_manager.v2.HttpConnectionManager",
+            "stat_prefix": "outbound_0.0.0.0_8761",
+            "rds": {
+             "config_source": {
+              "ads": {}
+             },
+             "route_config_name": "8761"
+            },
+            "http_filters": [
+             {
+              "name": "envoy.filters.http.wasm",
+              "typed_config": {
+               "@type": "type.googleapis.com/udpa.type.v1.TypedStruct",
+               "type_url": "type.googleapis.com/envoy.config.filter.http.wasm.v2.Wasm",
+               "value": {
+                "config": {
+                 "vm_config": {
+                  "runtime": "envoy.wasm.runtime.null",
+                  "code": {
+                   "local": {
+                    "inline_string": "envoy.wasm.metadata_exchange"
+                   }
+                  }
+                 },
+                 "configuration": "envoy.wasm.metadata_exchange"
+                }
+               }
+              }
+             },
+             {
+              "name": "istio.alpn",
+              "typed_config": {
+               "@type": "type.googleapis.com/istio.envoy.config.filter.http.alpn.v2alpha1.FilterConfig",
+               "alpn_override": [
+                {
+                 "alpn_override": [
+                  "istio-http/1.0",
+                  "istio"
+                 ]
+                },
+                {
+                 "upstream_protocol": "HTTP11",
+                 "alpn_override": [
+                  "istio-http/1.1",
+                  "istio"
+                 ]
+                },
+                {
+                 "upstream_protocol": "HTTP2",
+                 "alpn_override": [
+                  "istio-h2",
+                  "istio"
+                 ]
+                }
+               ]
+              }
+             },
+             {
+              "name": "envoy.cors",
+              "typed_config": {
+               "@type": "type.googleapis.com/envoy.config.filter.http.cors.v2.Cors"
+              }
+             },
+             {
+              "name": "envoy.fault",
+              "typed_config": {
+               "@type": "type.googleapis.com/envoy.config.filter.http.fault.v2.HTTPFault"
+              }
+             },
+             {
+              "name": "envoy.filters.http.wasm",
+              "typed_config": {
+               "@type": "type.googleapis.com/udpa.type.v1.TypedStruct",
+               "type_url": "type.googleapis.com/envoy.config.filter.http.wasm.v2.Wasm",
+               "value": {
+                "config": {
+                 "root_id": "stats_outbound",
+                 "vm_config": {
+                  "vm_id": "stats_outbound",
+                  "runtime": "envoy.wasm.runtime.null",
+                  "code": {
+                   "local": {
+                    "inline_string": "envoy.wasm.stats"
+                   }
+                  }
+                 },
+                 "configuration": "{\n  \"debug\": \"false\",\n  \"stat_prefix\": \"istio\",\n}\n"
+                }
+               }
+              }
+             },
+             {
+              "name": "envoy.router",
+              "typed_config": {
+               "@type": "type.googleapis.com/envoy.config.filter.http.router.v2.Router"
+              }
+             }
+            ],
+            "tracing": {
+             "client_sampling": {
+              "value": 100
+             },
+             "random_sampling": {
+              "value": 1
+             },
+             "overall_sampling": {
+              "value": 100
+             }
+            },
+            "access_log": [
+             {
+              "name": "envoy.file_access_log",
+              "typed_config": {
+               "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+               "path": "/dev/stdout",
+               "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" \"%UPSTREAM_TRANSPORT_FAILURE_REASON%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME% %ROUTE_NAME%\n"
+              }
+             }
+            ],
+            "use_remote_address": false,
+            "generate_request_id": true,
+            "upgrade_configs": [
+             {
+              "upgrade_type": "websocket"
+             }
+            ],
+            "stream_idle_timeout": "0s",
+            "normalize_path": true
+           }
+          }
+         ]
+        },
+        {
+         "filter_chain_match": {},
+         "filters": [
+          {
+           "name": "envoy.filters.network.wasm",
+           "typed_config": {
+            "@type": "type.googleapis.com/udpa.type.v1.TypedStruct",
+            "type_url": "type.googleapis.com/envoy.config.filter.network.wasm.v2.Wasm",
+            "value": {
+             "config": {
+              "root_id": "stats_outbound",
+              "vm_config": {
+               "vm_id": "tcp_stats_outbound",
+               "runtime": "envoy.wasm.runtime.null",
+               "code": {
+                "local": {
+                 "inline_string": "envoy.wasm.stats"
+                }
+               }
+              },
+              "configuration": "{\n  \"debug\": \"false\",\n  \"stat_prefix\": \"istio\",\n}\n"
+             }
+            }
+           }
+          },
+          {
+           "name": "envoy.tcp_proxy",
+           "typed_config": {
+            "@type": "type.googleapis.com/envoy.config.filter.network.tcp_proxy.v2.TcpProxy",
+            "stat_prefix": "PassthroughCluster",
+            "cluster": "PassthroughCluster",
+            "access_log": [
+             {
+              "name": "envoy.file_access_log",
+              "typed_config": {
+               "@type": "type.googleapis.com/envoy.config.accesslog.v2.FileAccessLog",
+               "path": "/dev/stdout",
+               "format": "[%START_TIME%] \"%REQ(:METHOD)% %REQ(X-ENVOY-ORIGINAL-PATH?:PATH)% %PROTOCOL%\" %RESPONSE_CODE% %RESPONSE_FLAGS% \"%DYNAMIC_METADATA(istio.mixer:status)%\" \"%UPSTREAM_TRANSPORT_FAILURE_REASON%\" %BYTES_RECEIVED% %BYTES_SENT% %DURATION% %RESP(X-ENVOY-UPSTREAM-SERVICE-TIME)% \"%REQ(X-FORWARDED-FOR)%\" \"%REQ(USER-AGENT)%\" \"%REQ(X-REQUEST-ID)%\" \"%REQ(:AUTHORITY)%\" \"%UPSTREAM_HOST%\" %UPSTREAM_CLUSTER% %UPSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_LOCAL_ADDRESS% %DOWNSTREAM_REMOTE_ADDRESS% %REQUESTED_SERVER_NAME% %ROUTE_NAME%\n"
+              }
+             }
+            ]
+           }
+          }
+         ],
+         "metadata": {
+          "filter_metadata": {
+           "pilot_meta": {
+            "fallthrough": true
+           }
+          }
+         },
+         "name": "PassthroughFilterChain"
+        }
+       ],
+       "deprecated_v1": {
+        "bind_to_port": false
+       },
+       "listener_filters": [
+        {
+         "name": "envoy.listener.tls_inspector",
+         "typed_config": {
+          "@type": "type.googleapis.com/envoy.config.filter.listener.tls_inspector.v2.TlsInspector"
+         }
+        },
+        {
+         "name": "envoy.listener.http_inspector",
+         "typed_config": {
+          "@type": "type.googleapis.com/envoy.config.filter.listener.http_inspector.v2.HttpInspector"
+         }
+        }
+       ],
+       "listener_filters_timeout": "0.100s",
+       "traffic_direction": "OUTBOUND",
+       "continue_on_listener_filters_timeout": true
+      },
+      "last_updated": "2020-09-27T13:46:35.621Z"
+     }
+    },
+    {
+     "version_info": "2020-09-27T13:45:37Z/7",
+     "route_config": {
+      "@type": "type.googleapis.com/envoy.api.v2.RouteConfiguration",
+      "name": "8761",
+      "virtual_hosts": [
+       {
+        "name": "allow_any",
+        "domains": [
+         "*"
+        ],
+        "routes": [
+         {
+          "match": {
+           "prefix": "/"
+          },
+          "route": {
+           "cluster": "PassthroughCluster",
+           "timeout": "0s",
+           "max_grpc_timeout": "0s"
+          },
+          "name": "allow_any"
+         }
+        ],
+        "include_request_attempt_count": true
+       },
+       {
+        "name": "eureka-server.eureka.svc.cluster.local:8761",
+        "domains": [
+         "eureka-server.eureka.svc.cluster.local",
+         "eureka-server.eureka.svc.cluster.local:8761",
+         "eureka-server",
+         "eureka-server:8761",
+         "eureka-server.eureka.svc.cluster",
+         "eureka-server.eureka.svc.cluster:8761",
+         "eureka-server.eureka.svc",
+         "eureka-server.eureka.svc:8761",
+         "eureka-server.eureka",
+         "eureka-server.eureka:8761",
+         "*.eureka-server.eureka.svc.cluster.local",
+         "*.eureka-server.eureka.svc.cluster.local:8761",
+         "*.eureka-server",
+         "*.eureka-server:8761",
+         "*.eureka-server.eureka.svc.cluster",
+         "*.eureka-server.eureka.svc.cluster:8761",
+         "*.eureka-server.eureka.svc",
+         "*.eureka-server.eureka.svc:8761",
+         "*.eureka-server.eureka",
+         "*.eureka-server.eureka:8761"
+        ],
+        "routes": [
+         {
+          "match": {
+           "prefix": "/"
+          },
+          "route": {
+           "cluster": "outbound|8761||eureka-server.eureka.svc.cluster.local",
+           "timeout": "0s",
+           "retry_policy": {
+            "retry_on": "connect-failure,refused-stream,unavailable,cancelled,retriable-status-codes",
+            "num_retries": 2,
+            "retry_host_predicate": [
+             {
+              "name": "envoy.retry_host_predicates.previous_hosts"
+             }
+            ],
+            "host_selection_retry_max_attempts": "5",
+            "retriable_status_codes": [
+             503
+            ]
+           },
+           "max_grpc_timeout": "0s"
+          },
+          "decorator": {
+           "operation": "eureka-server.eureka.svc.cluster.local:8761/*"
+          },
+          "name": "default"
+         }
+        ],
+        "include_request_attempt_count": true
+       }
+      ],
+      "validate_clusters": false
+     },
+     "last_updated": "2020-09-27T13:45:51.988Z"
+    },
